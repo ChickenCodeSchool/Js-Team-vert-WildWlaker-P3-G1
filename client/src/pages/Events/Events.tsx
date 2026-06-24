@@ -1,13 +1,14 @@
 import { useState } from "react";
 import Calendar from "react-calendar";
+import CreateEventForm from "../../components/CreateEventForm/CreateEventForm";
 import CardEvent from "../../components/Event/CardEvent";
+import FooterDashboard from "../../components/FooterDashboard/FooterDashboard";
 import FirstArticle from "../../components/SpacesPage/Header/FirstArticle/FirstArticle";
 import { ModalEventProvider } from "../../context/CloseEventModalContext";
 import useSumParticipants from "../../hooks/useSumParticipants";
 import useUpcomingEvents from "../../hooks/useUpcomingEvents";
 import "./Events.css";
 import "react-calendar/dist/Calendar.css";
-import FooterDashboard from "../../components/FooterDashboard/FooterDashboard";
 import type { FirstArticleProps } from "../../types/firstarticleprops";
 
 function Events() {
@@ -145,6 +146,9 @@ function Events() {
             );
           })}
         </div>
+      </section>
+      <section className="events-section-create-event">
+        <CreateEventForm />
       </section>
       <FooterDashboard />
     </>

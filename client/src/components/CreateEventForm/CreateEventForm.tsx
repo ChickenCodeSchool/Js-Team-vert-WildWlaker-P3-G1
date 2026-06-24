@@ -103,7 +103,7 @@ export default function CreateEventForm() {
       {/* Colonne de présentation */}
       <div className="create-event-sidebar">
         <p className="create-event-sidebar-subtitle">Vous avez un projet ?</p>
-        <h1 className="create-event-sidebar-title">Proposez un événement</h1>
+        <h2 className="create-event-sidebar-title">Proposez un événement</h2>
         <p className="create-event-sidebar-description">
           Le Local met ses espaces à disposition de la communauté pour organiser
           des ateliers, conférences, soirées et hackathons. Soumettez votre

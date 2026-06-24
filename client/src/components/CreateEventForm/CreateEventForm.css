@@ -5,7 +5,7 @@
   justify-content: space-between;
   min-height: 100vh;
   padding: 6rem;
-  background-color: var(--color-bg-light);
+  background-color: var(--color-bg-2);
   font-family: var(--font-heading);
   box-sizing: border-box;
 
@@ -30,15 +30,15 @@
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--color-primary);
+      color: var(--color-text-primary);
       margin: 0 0 1rem;
     }
 
     & .create-event-sidebar-title {
-      font-size: clamp(3rem, 5vw, 4rem);
+      font-size: clamp(2rem, 5vw, 3rem);
       font-weight: 800;
       line-height: 1.05;
-      color: var(--color-text-primary);
+      color: var(--color-text-on-dark);
       margin: 0 0 1.5rem;
       letter-spacing: -0.01em;
     }

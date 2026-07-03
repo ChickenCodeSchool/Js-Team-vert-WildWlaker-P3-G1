@@ -72,12 +72,6 @@ const edit: RequestHandler = async (req, res, next) => {
     const cartItemId = Number(req.params.id); // À garder si tu ne valides pas req.params avec Joi
     const { quantity } = req.body; // number validé avec joi
 
-    //géré dans middleware
-    /*     if (quantity < 1) {
-      res.sendStatus(400);
-      return;
-    }
- */
     const affectedRows = await cartRepository.updateQuantity(
       cartItemId,
       quantity,

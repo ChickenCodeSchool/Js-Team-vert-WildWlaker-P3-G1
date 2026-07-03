@@ -131,6 +131,7 @@
      LAYOUT & CONTENEURS
   ---------------------------------------------------------- */
 
+  --container-xs: 350px;
   --container-sm: 640px;
   --container-md: 768px;
   --container-lg: 1024px;

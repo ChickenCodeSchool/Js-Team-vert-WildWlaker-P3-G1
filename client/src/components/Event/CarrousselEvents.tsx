@@ -89,7 +89,7 @@ function CarrousselEvents({ events }: CarrousselEventsProps) {
   };
   return (
     <>
-      <div className="carousel-container">
+      <div className="carroussel-container">
         {events.length > 0 ? (
           <>
             {/* Flèche Gauche */}

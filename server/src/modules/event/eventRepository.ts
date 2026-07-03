@@ -53,6 +53,7 @@ class EventRepository {
     INNER JOIN space AS s ON a.space_id = s.id
     WHERE s.space_type = 'Evenements'
     AND a.start_date >= CURRENT_DATE()
+    AND a.status = 'approved'
     ORDER BY a.start_date ASC 
   `,
     );
@@ -73,6 +74,7 @@ class EventRepository {
     JOIN space as s ON a.space_id = s.id
     LEFT JOIN booking as b ON b.id_activity = a.id
     WHERE s.space_type = 'Evenements'
+    AND a.status = 'approved'
     GROUP BY a.id, a.name, s.capacity`,
     );
 
@@ -132,6 +134,7 @@ class EventRepository {
     INNER JOIN time_slot AS t ON a.time_slot_id = t.id
     INNER JOIN space AS s ON a.space_id = s.id
     WHERE s.space_type = 'Evenements'
+    AND a.status = 'approved'
     AND a.start_date = ?
     ORDER BY t.start_hour ASC  `,
       [date],

@@ -46,7 +46,9 @@ const readAvailability: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    const isOpenSpace = space.space_category.toLowerCase().includes("open");
+    const isOpenSpace =
+      space.space_category.toLowerCase().includes("open") ||
+      space.space_category === "Atelier";
     const isLocal = space.space_category === "Local vide";
 
     // --- Cas "Local vide" : réservation sur une plage de dates ---

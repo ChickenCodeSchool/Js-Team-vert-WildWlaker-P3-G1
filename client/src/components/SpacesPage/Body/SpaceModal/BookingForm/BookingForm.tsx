@@ -23,7 +23,6 @@ type BookingFormProps = {
 function BookingForm({ space, onBack, userId }: BookingFormProps) {
   const [date, setDate] = useState("");
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [seats, setSeats] = useState(1);
   // Durée en mois pour un "Local vide". Pas de setter exposé pour l'instant (toujours 1 mois) : le underscore signale que setMonths n'est pas utilisé.
   const [months, _setMonths] = useState(1);
@@ -134,7 +133,6 @@ function BookingForm({ space, onBack, userId }: BookingFormProps) {
         total_price: totalPrice,
         effective_price: effectivePrice,
         name,
-        email,
       };
 
       const res = await apiFetch("/api/bookings", {
@@ -289,18 +287,6 @@ function BookingForm({ space, onBack, userId }: BookingFormProps) {
             className="booking-form-input"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </label>
-      )}
-      {!isUnavailable && (availability?.available ?? 0) > 0 && (
-        <label className="booking-form-label">
-          Email
-          <input
-            type="email"
-            className="booking-form-input"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </label>

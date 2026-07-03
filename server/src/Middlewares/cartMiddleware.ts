@@ -7,6 +7,17 @@ const addEventSchema = Joi.object({
   event_id: Joi.number().integer().positive().required(),
   quantity: Joi.number().integer().positive().required(),
   total_price: Joi.number().min(0).required(),
+  last_name: Joi.string()
+    .pattern(/^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/)
+    .min(2)
+    .max(50)
+    .required(),
+  first_name: Joi.string()
+    .pattern(/^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/)
+    .min(2)
+    .max(50)
+    .required(),
+  email: Joi.string().email().required(),
 });
 
 // Schéma pour la MISE À JOUR (PUT/PATCH)
@@ -39,6 +50,15 @@ const validateBody = (schema: Joi.ObjectSchema): RequestHandler => {
         "number.min":
           "Le champ {#label} ne peut pas être inférieur à {#limit}.",
         "object.min": "Vous devez fournir au moins un champ à modifier.",
+        "string.base": "Le champ {#label} doit être du texte.",
+        "string.empty": "Le champ {#label} ne peut pas être vide.",
+        "string.min":
+          "Le champ {#label} doit contenir au moins {#limit} caractères.",
+        "string.max":
+          "Le champ {#label} ne peut pas dépasser {#limit} caractères.",
+        "string.pattern.base":
+          "Le champ {#label} ne doit pas contenir de chiffres.",
+        "string.email": "Le champ {#label} doit être une adresse email valide.",
       },
     });
 

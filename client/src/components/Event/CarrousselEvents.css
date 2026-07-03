@@ -1,7 +1,7 @@
 /* --- STRUCTURE DU CARROUSEL --- */
-.carousel-container {
+.carroussel-container {
   position: relative;
-  width: 70%;
+  width: 100%;
   max-width: 100%;
   padding: 0 var(--space-12);
   /* Fenêtre de défilement */

@@ -10,10 +10,10 @@ function HeaderWorkshop() {
     sloganEnd: "qui vous font grandir",
     description:
       "Sérigraphie, code, poterie, podcast, cuisine, photographie… Des formations courtes animées par des experts passionnés, dans nos espaces.",
-    info1: 42,
-    info1text: "Ateliers / trimestre",
-    info2: 18,
-    info2text: "Formateurs",
+    info1: 4,
+    info1text: "Ateliers",
+    info2: 1400,
+    info2text: "M² TOTAL",
     info3: "580+",
     info3text: "Participants / an",
   };

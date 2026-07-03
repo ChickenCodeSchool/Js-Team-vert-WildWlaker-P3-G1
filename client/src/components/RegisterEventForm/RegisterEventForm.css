@@ -183,5 +183,6 @@
     background-color: transparent;
     color: #c62828;
     border: 1px solid #ef9a9a;
+    white-space: pre-line;
   }
 }

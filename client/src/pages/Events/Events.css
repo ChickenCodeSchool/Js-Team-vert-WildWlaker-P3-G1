@@ -1,7 +1,172 @@
+/* ============== section header ========== */
+
+.events-section-hero {
+  background: var(--color-bg-hero);
+  height: var(--section-hero-height-sm);
+}
+
+/* ================== général : titres, <p>, icones ======================*/
+.events-title {
+  text-transform: uppercase;
+  font-family: var(--font-heading);
+  color: var(--color-text-secondary);
+  padding-bottom: var(--space-8);
+}
+
+.events-text {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  width: 60%;
+  padding-bottom: var(--space-6);
+  line-height: 1.65;
+}
+.events-div-icon-title {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  .events-icon-wrapper {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    align-self: stretch;
+    background-color: var(--color-bg-2);
+    color: var(--primary-color);
+    border-radius: 50%;
+    width: var(--space-10);
+    height: var(--space-10);
+    flex-shrink: 0;
+    line-height: 1;
+  }
+}
+
+/* ============== section AGENDA ========== */
+
+.events-big-section {
+  padding: var(--space-10) var(--space-20);
+  background: var(--color-bg-2);
+  .events-big-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+    .events-page-title {
+      color: var(--color-text-secondary);
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+    }
+    .events-page-hr {
+      flex: 1;
+      height: 1px;
+      border: none;
+      background-color: var(--color-text-secondary);
+    }
+  }
+  .events-section-agenda {
+    background-image: linear-gradient(var(--color-bg-1), var(--color-bg-1));
+    background-color: var(--color-tag-text);
+    border-radius: var(--border-radius);
+    padding: var(--space-8);
+    margin-bottom: var(--space-14);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    .events-agenda-div-title-text {
+      .events-text-agenda {
+        padding: 0;
+      }
+    }
+    .events-calendar-carroussel-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: stretch;
+      gap: var(--space-20);
+      width: 100%;
+
+      .events-calendar-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        max-width: 40%;
+      }
+      .events-details-panel {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: stretch;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.2);
+        padding: var(--space-8);
+        width: 60%;
+        min-height: var(--container-xs);
+
+        .events-icon-empty {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: var(--space-16);
+          height: var(--space-16);
+          background-color: var(--color-bg-2);
+          border-radius: 50%;
+          margin: 0 auto var(--space-5) auto;
+        }
+        .event-empty-day {
+          width: 100%;
+        }
+        .events-carroussel-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+/* =================== section upcoming events ===================== */
+
+.events-section-upcoming {
+  padding: var(--space-10) var(--space-20);
+  background-color: var(--color-bg-1);
+
+  .events-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(24vw, 1fr));
+    justify-content: center;
+    gap: var(--space-5);
+    padding: var(--space-8) var(--space-5);
+  }
+
+  .events-btn-see-all {
+    display: block;
+    text-decoration: none;
+    color: var(--color-text-on-dark);
+    text-align: center;
+    font-weight: bold;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    background-color: var(--btn-primary-bg);
+    border: 1px solid var(--color-border);
+    padding: var(--space-4) var(--space-8);
+    width: max-content;
+    margin: auto;
+    &:hover {
+      background-color: var(--btn-primary-bg-hover);
+      color: var(--color-bg-white);
+      cursor: pointer;
+      transform: scale(1.1);
+    }
+  }
+}
+
 /* =============== CALENDAR ====================*/
 .react-calendar {
-  background: var(--color-bg-card);
-  border: none;
+  background-color: var(--color-bg-light) !important; /*pour forcer le css par défaut de react*/
+  border: 3px solid var(--color-primary) !important;
   border-radius: var(--radius-xl);
   overflow: hidden;
   height: max-content;
@@ -9,7 +174,7 @@
 }
 
 .react-calendar__navigation {
-  background: var(--color-primary);
+  background-color: var(--color-primary);
   color: var(--color-tag-text);
 }
 .react-calendar__navigation__arrow {
@@ -21,7 +186,16 @@
   font-weight: var(--font-semibold);
   text-transform: uppercase;
 }
-
+.react-calendar__navigation__label__labelText:hover {
+  color: var(--color-primary);
+}
+.react-calendar__navigation__labelText:hover,
+.react-calendar__navigation__next-button:hover,
+.react-calendar__navigation__next2-button:hover,
+.react-calendar__navigation__prev-button:hover,
+.react-calendar__navigation__prev2-button:hover {
+  color: var(--color-primary);
+}
 .react-calendar__month-view__weekdays__day {
   abbr {
     font-family: var(--font-body);
@@ -29,10 +203,18 @@
 }
 
 .react-calendar__month-view__days {
+  .react-calendar__tile {
+    &:enabled:hover {
+      background-color: white;
+    }
+  }
+  .react-calendar__tile--active {
+    background-color: var(--color-tag-bg) !important;
+    color: white;
+  }
   .react-calendar__tile.has-event {
     font-family: var(--font-body);
     font-weight: var(--font-semibold);
-
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -42,105 +224,16 @@
     &::before {
       content: "*";
       display: inline-block;
-
       width: 14px;
       height: 14px;
       border-radius: 50%;
-
       background-color: rgb(150, 188, 150);
       border: none;
-
       /* Sécurité pour éviter que le flexbox n'écrase le rond */
       flex-shrink: 0;
     }
   }
   .react-calendar__tile.no-event {
     font-family: var(--font-body);
-  }
-}
-
-/* ================== SECTIONS ======================*/
-
-.events-section-hero {
-  background: var(--color-bg-hero);
-}
-.events-big-title {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--space-4);
-  margin-bottom: var(--space-8);
-  .events-page-title {
-    color: var(--color-text-secondary);
-    font-family: var(--font-heading);
-    text-transform: uppercase;
-  }
-  .events-page-hr {
-    flex: 1;
-    height: 1px;
-    border: none;
-    background-color: var(--color-text-secondary);
-  }
-}
-
-.events-section-agenda {
-  padding: var(--space-10) var(--space-20);
-  background: var(--color-bg-2);
-}
-.events-section-ALAUNE,
-.events-section-upcoming {
-  padding: var(--space-10) var(--space-20);
-  background-color: var(--color-bg-1);
-}
-.events-div-upcoming-events {
-  display: grid;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.events-title {
-  text-transform: uppercase;
-  font-family: var(--font-heading);
-  color: var(--color-text-secondary);
-  padding-bottom: var(--space-8);
-}
-
-/* ============== section AGENDA ========== */
-
-.events-calendar-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: var(--space-8);
-  width: 100%;
-  .calendar-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    max-width: 450px;
-  }
-}
-
-/* =================== section upcoming events ===================== */
-
-.events-grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(24vw, 1fr));
-  justify-content: center;
-  gap: 20px;
-  padding: 20px;
-}
-
-.events-btn-see-all {
-  font-family: var(--font-body);
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  &:hover {
-    transform: scale(1.1);
   }
 }

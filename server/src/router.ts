@@ -30,10 +30,10 @@ import spaceActions from "./modules/space/spaceActions";
 router.get("/api/spaces", spaceActions.browse);
 router.get("/api/spaces/:id/availability", spaceActions.readAvailability);
 
-import eventMiddleware from "./Middlewares/eventMiddleware";
 /* ************************************************************************* */
 // Events (public)
 /* ************************************************************************* */
+import eventMiddleware from "./Middlewares/eventMiddleware";
 import eventActions from "./modules/event/eventActions";
 
 router.get("/api/events", eventActions.browseUpcomingEvents);

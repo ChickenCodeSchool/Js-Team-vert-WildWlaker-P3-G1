@@ -2,70 +2,80 @@ import "./WorkshopOfTheWeek.css";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import useSpaceAvailability from "../../../hooks/useSpaceAvailability";
+import type { Space } from "../../../types/space";
 import SpaceModal from "../../SpacesPage/Body/SpaceModal/SpaceModal";
 import SpaceModalContent from "../../SpacesPage/Body/SpaceModal/SpaceModalContent/SpaceModalContent";
 
-import type { Space } from "../../../types/space";
+const today = new Date().toISOString().slice(0, 10);
 
 interface WorkshopOfTheWeekProps {
-  workshop: Space | undefined;
+  workshop: Space;
 }
 
 function WorkshopOfTheWeek({ workshop }: WorkshopOfTheWeekProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  if (!workshop) return null;
+  const { availability: availMatin } = useSpaceAvailability(
+    workshop.id,
+    today,
+    "1",
+  );
+  const { availability: availApresMidi } = useSpaceAvailability(
+    workshop.id,
+    today,
+    "2",
+  );
 
   return (
-    <section className="center-of-workshop-page">
-      <div className="workshop-of-the-week">
-        <h1 className="title-workshop-section">ATELIER DE LA SEMAINE</h1>
-
-        <div className="workshop-of-the-week-card-parent">
-          <div
-            className="box-img-card-workshop-of-the-week"
-            // style={{
-            //   backgroundImage: workshop.url_image
-            //     ? `url(${workshop.url_image})`
-            //     : undefined,
-            //   backgroundSize: "cover",
-            //   backgroundPosition: "center",
-            // }}
-          >
-            <span className="badge-level">TOUS NIVEAUX</span>
-          </div>
-
-          <div className="info-card-workshop-of-the-week">
-            <div className="description-of-the-week-workshop">
-              <span className="category-pill">{workshop.space_type}</span>
-              <h1>{workshop.space_name}</h1>
-              <p>{workshop.description}</p>
-            </div>
-
-            <div className="about-workshop-of-the-week">
-              {/* <span>
-                ⏱ {workshop.slot} – {formatHour(workshop.start_hour)} -
-                {formatHour(workshop.end_hour)}(1 pause)
-              </span> */}
-              <span>👤 {workshop.capacity} participants max</span>
-              <span>📍 {workshop.space_name}</span>
-            </div>
-
-            <div className="btn-and-price-for-workshop-of-the-week">
-              <div className="btn-of-the-week">
-                <button
-                  type="button"
-                  className="btn-reserve"
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  Réserver ma place
-                </button>
-              </div>
-              <div className="price">{workshop.price_unit}€</div>
-            </div>
-          </div>
-        </div>
+    <section className="workshop-featured">
+      <div className="workshop-featured__header">
+        <h2 className="workshop-featured__title">NOS ATELIERS</h2>
+        <hr className="workshop-featured__divider" />
       </div>
+
+      <article className="workshop-featured__card">
+        <div
+          className="workshop-featured__img"
+          style={{
+            backgroundImage: workshop.url_image
+              ? `url(${import.meta.env.VITE_API_URL}${workshop.url_image})`
+              : undefined,
+          }}
+        >
+          <span className="workshop-featured__price-badge">
+            {workshop.price_unit} €
+          </span>
+          <span className="workshop-featured__category">
+            {workshop.space_type}
+          </span>
+        </div>
+
+        <div className="workshop-featured__info">
+          <h3 className="workshop-featured__name">{workshop.space_name}</h3>
+
+          <div className="workshop-featured__availability">
+            <p className="workshop-featured__today">Aujourd'hui</p>
+            <span className="workshop-featured__slot">
+              Matin — {availMatin?.available ?? workshop.capacity}/
+              {workshop.capacity} places
+            </span>
+            <span className="workshop-featured__slot">
+              Après-midi — {availApresMidi?.available ?? workshop.capacity}/
+              {workshop.capacity} places
+            </span>
+          </div>
+
+          <button
+            type="button"
+            className="workshop-featured__btn"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Réserver ma place
+          </button>
+        </div>
+      </article>
+
       {createPortal(
         <AnimatePresence>
           {isModalOpen && (

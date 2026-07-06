@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 6vh;
+  min-height: 4.5rem;
   flex-wrap: wrap;
   background-color: var(--color-forest);
   color: var(--color-text-on-dark);
@@ -18,11 +18,19 @@
   .navbar-links-div {
     display: flex;
     gap: var(--gap-xl);
+    align-items: center;
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
     & .navbar-link-button {
       background: none;
       border: none;
       font-size: 1rem;
+      flex-shrink: 0;
       padding: var(--space-1) var(--space-3) var(--space-1) var(--space-3);
 
       & .navbar-link {
@@ -43,6 +51,7 @@
 
   .navbar-connection-div {
     display: flex;
+    align-items: center;
     gap: var(--gap-sm);
 
     & .navbar-link {
@@ -73,6 +82,89 @@
     }
     .cart-logo {
       color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    min-height: auto;
+    padding: var(--space-2) var(--space-3);
+    gap: var(--space-2);
+
+    .navbar-title img {
+      max-height: 1.75rem;
+      width: auto;
+    }
+
+    .navbar-links-div {
+      order: 3;
+      width: 100%;
+      gap: var(--space-2);
+      padding-bottom: var(--space-1);
+
+      & .navbar-link-button {
+        padding: var(--space-1) var(--space-2);
+
+        & .navbar-link {
+          font-size: var(--text-xs);
+          white-space: nowrap;
+        }
+      }
+    }
+
+    .navbar-connection-div {
+      gap: var(--space-2);
+
+      & .navbar-link {
+        font-size: var(--text-xs);
+      }
+
+      & .navbar-connection-button-2 {
+        padding: var(--space-1) var(--space-2);
+        font-size: var(--text-xs);
+      }
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    padding: var(--space-2);
+
+    .navbar-title img {
+      max-height: 1.45rem;
+    }
+
+    .navbar-links-div {
+      gap: var(--space-1);
+
+      & .navbar-link-button {
+        padding: var(--space-1);
+
+        & .navbar-link {
+          font-size: var(--text-xs);
+        }
+      }
+    }
+
+    .navbar-connection-div {
+      gap: var(--space-1);
+
+      & .navbar-link {
+        font-size: var(--text-xs);
+      }
+
+      & .navbar-connection-button-2 {
+        padding: var(--space-1) var(--space-2);
+        font-size: var(--text-xs);
+      }
+
+      .cart-logo {
+        svg {
+          width: 1rem;
+          height: 1rem;
+        }
+      }
     }
   }
 }

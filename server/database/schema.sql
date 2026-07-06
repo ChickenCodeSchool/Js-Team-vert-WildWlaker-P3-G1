@@ -37,6 +37,7 @@ INSERT INTO `space` VALUES
 (21,'L\'Escale','Espace détente du Local, pensé comme une bulle de calme et de lumière, idéal pour se reposer, échanger informellement ou faire une pause entre deux temps de travail dans un cadre apaisant.',50,'/assets/images/spaces/break-room/escale.png',0,'Détente','Salle détente'),
 (22,'La Serre','Espace détente du Local, chaleureux et végétalisé, offrant un environnement calme et ressourçant pour se relaxer, discuter ou simplement souffler au cœur de la journée.',50,'/assets/images/spaces/break-room/serre.png',0,'Détente','Salle détente');
 
+
 DROP TABLE IF EXISTS `time_slot`;
 
 CREATE TABLE `time_slot` (

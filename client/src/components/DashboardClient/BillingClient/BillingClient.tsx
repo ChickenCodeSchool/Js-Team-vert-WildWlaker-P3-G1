@@ -15,8 +15,12 @@ function BillingClient() {
     <section className="billing-client__container">
       <div className="billing-client__header">
         <h2 className="billing-client__title">
-          <ReceiptText size={20} color="var(--color-primary)" />
-          Historique des factures
+          <ReceiptText
+            size={20}
+            color="var(--color-primary)"
+            aria-hidden="true"
+          />
+          <caption className="sr-only">Historique des factures</caption>
         </h2>
         {billing.length > 8 && (
           <button
@@ -36,12 +40,24 @@ function BillingClient() {
           <table className="billing-client__table">
             <thead>
               <tr>
-                <th className="billing-client__th">Référence</th>
-                <th className="billing-client__th">Date</th>
-                <th className="billing-client__th">Description</th>
-                <th className="billing-client__th">Montant</th>
-                <th className="billing-client__th">Statut</th>
-                <th className="billing-client__th">Facture</th>
+                <th className="billing-client__th" scope="col">
+                  Référence
+                </th>
+                <th className="billing-client__th" scope="col">
+                  Date
+                </th>
+                <th className="billing-client__th" scope="col">
+                  Description
+                </th>
+                <th className="billing-client__th" scope="col">
+                  Montant
+                </th>
+                <th className="billing-client__th" scope="col">
+                  Statut
+                </th>
+                <th className="billing-client__th" scope="col">
+                  Facture
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -71,6 +87,7 @@ function BillingClient() {
                       onClick={() =>
                         window.open(`/invoice/${item.id}`, "_blank")
                       }
+                      aria-label={`Télécharger la facture ${item.bills_number} en PDF`}
                     >
                       PDF
                     </button>

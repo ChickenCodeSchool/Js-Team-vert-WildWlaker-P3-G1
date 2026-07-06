@@ -1,8 +1,7 @@
-/* ============== section header ========== */
+/* ============== header ========== */
 
 .events-section-hero {
   background: var(--color-bg-hero);
-  height: var(--section-hero-height-sm);
 }
 
 /* ================== général : titres, <p>, icones ======================*/
@@ -10,6 +9,7 @@
   text-transform: uppercase;
   font-family: var(--font-heading);
   color: var(--color-text-secondary);
+  font-size: clamp(var(--text-lg), 5vw, var(--text-xl));
   padding-bottom: var(--space-8);
 }
 
@@ -17,7 +17,7 @@
   font-family: var(--font-body);
   font-size: var(--text-base);
   color: var(--color-text-secondary);
-  width: 60%;
+  width: 50%;
   padding-bottom: var(--space-6);
   line-height: 1.65;
 }
@@ -53,6 +53,7 @@
     gap: var(--space-4);
     margin-bottom: var(--space-8);
     .events-page-title {
+      font-size: clamp(var(--text-xl), 5vw, var(--text-2xl));
       color: var(--color-text-secondary);
       font-family: var(--font-heading);
       text-transform: uppercase;
@@ -81,7 +82,7 @@
       flex-direction: row;
       justify-content: center;
       align-items: stretch;
-      gap: var(--space-20);
+      gap: var(--space-10);
       width: 100%;
 
       .events-calendar-wrapper {
@@ -89,7 +90,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        max-width: 40%;
+        width: 40%;
       }
       .events-details-panel {
         display: flex;
@@ -98,7 +99,7 @@
         align-items: stretch;
         text-align: center;
         background-color: rgba(255, 255, 255, 0.2);
-        padding: var(--space-8);
+        padding: var(--space-8) var(--space-6) var(--space-8) 0;
         width: 60%;
         min-height: var(--container-xs);
 
@@ -117,6 +118,7 @@
         }
         .events-carroussel-container {
           display: flex;
+          flex-direction: column;
           justify-content: center;
           align-items: center;
           width: 100%;
@@ -135,12 +137,11 @@
 
   .events-grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(24vw, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     justify-content: center;
     gap: var(--space-5);
     padding: var(--space-8) var(--space-5);
   }
-
   .events-btn-see-all {
     display: block;
     text-decoration: none;
@@ -235,5 +236,70 @@
   }
   .react-calendar__tile.no-event {
     font-family: var(--font-body);
+  }
+}
+
+/*================== RESPONSIVE ================*/
+
+@media screen and (max-width: 1280px) {
+  .events-text {
+    width: 100%;
+  }
+  .events-big-section {
+    padding: var(--space-10) var(--space-14);
+
+    .events-section-agenda {
+      padding: var(--space-10) var(--space-10);
+      .events-agenda-div-title-text {
+        .events-text-agenda {
+          padding-bottom: var(--space-4);
+        }
+      }
+      .events-calendar-carroussel-container {
+        flex-direction: column;
+        gap: var(--space-8);
+        .events-calendar-wrapper {
+          width: 100%;
+        }
+        .events-details-panel {
+          width: 100%;
+          padding: var(--space-6) 0;
+          .events-carroussel-container {
+            padding: 0;
+          }
+        }
+      }
+    }
+  }
+  .events-section-upcoming {
+    padding: var(--space-10) var(--space-14);
+    .events-grid-container {
+      grid-template-columns: repeat(2, 1fr);
+      padding: var(--space-6);
+    }
+  }
+}
+
+@media screen and (max-width: 428px) {
+  .events-big-section {
+    padding: var(--space-7) var(--space-8);
+
+    .events-section-agenda {
+      padding: var(--space-7) var(--space-6);
+      .events-calendar-carroussel-container {
+        gap: var(--space-10);
+
+        .events-details-panel {
+          padding: var(--space-4) 0;
+        }
+      }
+    }
+  }
+  .events-section-upcoming {
+    padding: var(--space-7) var(--space-8);
+    .events-grid-container {
+      grid-template-columns: 1fr;
+      padding: var(--space-6) var(--space-5);
+    }
   }
 }

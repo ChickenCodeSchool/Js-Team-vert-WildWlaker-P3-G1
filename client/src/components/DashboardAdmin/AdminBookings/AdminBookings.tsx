@@ -47,7 +47,7 @@ function AdminBookings({ previewLimit }: AdminBookingsProps) {
             <thead>
               <tr>
                 <th>Référence</th>
-                <th>Client</th>
+                <th>Clients</th>
                 <th>Description</th>
                 <th>Espaces</th>
                 <th>Date</th>

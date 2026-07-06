@@ -34,7 +34,7 @@
     }
   }
 
-  .dashboard-client-content {
+  .dashboard-client-section {
     flex: 1;
     width: 100%;
     padding: var(--space-8) var(--container-padding-x) var(--space-8);
@@ -43,7 +43,7 @@
     gap: var(--space-6);
   }
 
-  .dashboard-client-section {
+  .dashboard-client-part {
     width: 100%;
     max-width: var(--container-xl);
     margin: 0 auto;
@@ -67,7 +67,7 @@
   }
 
   @media screen and (max-width: 900px) {
-    .dashboard-client-content {
+    .dashboard-client-section {
       padding: var(--space-5) var(--container-padding-x-sm) var(--space-6);
       gap: var(--space-5);
     }
@@ -97,7 +97,7 @@
   }
 
   @media screen and (max-width: 480px) {
-    .dashboard-client-content {
+    .dashboard-client-section {
       padding: var(--space-4) var(--container-padding-x-sm) var(--space-5);
       gap: var(--space-4);
     }

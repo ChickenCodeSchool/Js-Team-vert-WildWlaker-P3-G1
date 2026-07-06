@@ -21,17 +21,22 @@ export default function DashboardClientPage() {
     <section className="dashboard-client-page">
       <div className="dashboard-client-page__header">
         <h1 className="dashboard-client-page__heading">
-          Bonjour {user.firstname} 👋
+          Bonjour {user.firstname}
+          <span aria-hidden="true"> 👋</span>
         </h1>
         <button className="logOutButton" type="button" onClick={logout}>
           Deconnexion
         </button>
       </div>
-      <div className="dashboard-client-content">
-        <div className="dashboard-client-section">
+      <section
+        className="dashboard-client-section"
+        aria-label="Tableau de bord"
+      >
+        {" "}
+        <div className="dashboard-client-part">
           <StatsClient />
         </div>
-        <div className="dashboard-client-section">
+        <div className="dashboard-client-part">
           <div className="dashboard-client-grid">
             <UpcomingBookingClient />
             <div className="dashboard-client-past">
@@ -40,16 +45,16 @@ export default function DashboardClientPage() {
             <UpcomingEventClient />
           </div>
         </div>
-        <div className="dashboard-client-section">
+        <div className="dashboard-client-part">
           <EventRequestsClient />
         </div>
-        <div className="dashboard-client-section">
+        <div className="dashboard-client-part">
           <BillingClient />
         </div>
-        <div className="dashboard-client-section">
+        <div className="dashboard-client-part">
           <ClaimClient />
         </div>
-      </div>
+      </section>
       <div className="dashboard-client-footer">
         <FooterDashboard />
       </div>

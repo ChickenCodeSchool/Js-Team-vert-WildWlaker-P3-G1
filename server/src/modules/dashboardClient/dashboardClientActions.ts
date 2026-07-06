@@ -1,4 +1,5 @@
 import type { RequestHandler } from "express";
+import createEventFormRepository from "../createEventForm/createEventFormRepository";
 import dashboardClientRepository from "./dashboardClientRepository";
 
 // The B of BREAD - Browse (Read All) operation
@@ -143,13 +144,31 @@ const addEventRequest: RequestHandler = async (req, res, next) => {
       res.status(401).json({ message: "Authentification requise." });
       return;
     }
+
+    const spaceId = Number(req.body.space_id);
+    const timeSlotId = Number(req.body.time_slot_id);
+    const startDate = req.body.start_date as string;
+
+    const slotTaken = await createEventFormRepository.isEventSlotTaken(
+      spaceId,
+      startDate,
+      timeSlotId,
+    );
+
+    if (slotTaken) {
+      res.status(409).json({
+        message: "Ce créneau est déjà pris pour cet espace.",
+      });
+      return;
+    }
+
     const insertId = await dashboardClientRepository.createEventRequest({
       name: req.body.name,
       description: req.body.description,
-      start_date: req.body.start_date,
+      start_date: startDate,
       end_date: req.body.end_date,
-      space_id: Number(req.body.space_id),
-      time_slot_id: Number(req.body.time_slot_id),
+      space_id: spaceId,
+      time_slot_id: timeSlotId,
       url_image:
         req.body.url_image ?? "/assets/images/events/default-event.webp",
       users_id: userId,

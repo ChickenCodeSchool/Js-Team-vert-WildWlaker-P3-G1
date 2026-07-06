@@ -215,11 +215,24 @@
     }
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1024px) {
     gap: var(--space-8);
+
+    .admin-spaces__title {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+    }
+
+    .admin-spaces__filters {
+      flex-wrap: wrap;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    gap: var(--space-6);
 
     .admin-spaces__header {
       flex-direction: column;
+      gap: var(--space-3);
     }
 
     .admin-spaces__filters {
@@ -228,35 +241,91 @@
       gap: var(--space-2);
     }
 
+    .admin-spaces__filter-input {
+      width: 100%;
+    }
+
     .admin-spaces__date {
       padding-top: 0;
+      font-size: var(--text-sm);
     }
 
     .admin-spaces__grid {
       grid-template-columns: 1fr;
+      gap: var(--space-3);
     }
   }
 
   @media screen and (max-width: 480px) {
-    .admin-spaces__card {
-      min-height: auto;
-      padding: var(--space-3);
-    }
+    gap: var(--space-5);
 
     .admin-spaces__title {
       font-size: 2rem;
+      line-height: 1.05;
+    }
+
+    .admin-spaces__group-title {
+      font-size: var(--text-base);
+    }
+
+    .admin-spaces__filter-label {
+      font-size: var(--text-xs);
+    }
+
+    .admin-spaces__filter-input {
+      padding: var(--space-2);
+      font-size: var(--text-xs);
+    }
+
+    .admin-spaces__date {
+      font-size: var(--text-xs);
+    }
+
+    .admin-spaces__card {
+      min-height: auto;
+      gap: var(--space-3);
+      padding: var(--space-3);
+    }
+
+    .admin-spaces__category {
+      margin-bottom: var(--space-1);
+      font-size: 0.75rem;
     }
 
     .admin-spaces__occupancy {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
+    }
+
+    .admin-spaces__name {
+      font-size: 1rem;
     }
 
     .admin-spaces__slot {
+      align-items: flex-start;
+      flex-direction: column;
+      font-size: var(--text-xs);
+      gap: var(--space-1);
+    }
+
+    .admin-spaces__time,
+    .admin-spaces__status,
+    .admin-spaces__meta {
       font-size: var(--text-xs);
     }
 
     .admin-spaces__meta {
-      font-size: var(--text-xs);
+      gap: 0.2rem;
+    }
+
+    .admin-spaces__footer {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: var(--space-2);
+      padding-top: var(--space-2);
+    }
+
+    .admin-spaces__status {
+      text-align: left;
     }
   }
 }

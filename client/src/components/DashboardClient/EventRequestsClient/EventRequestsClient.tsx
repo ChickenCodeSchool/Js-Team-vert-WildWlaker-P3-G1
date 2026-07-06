@@ -13,7 +13,11 @@ function EventRequestsClient() {
     <section className="event-requests-client__container">
       <div className="event-requests-client__header">
         <h2 className="event-requests-client__title">
-          <CalendarPlus size={20} color="var(--color-primary)" />
+          <CalendarPlus
+            size={20}
+            color="var(--color-primary)"
+            aria-hidden="true"
+          />{" "}
           Mes demandes d'événements
         </h2>
         {requests.length > 0 && (
@@ -21,6 +25,7 @@ function EventRequestsClient() {
             type="button"
             className="event-requests-client__toggle"
             onClick={() => setShowModal(true)}
+            aria-label="Voir toutes mes demandes d'événements"
           >
             Voir tout
           </button>

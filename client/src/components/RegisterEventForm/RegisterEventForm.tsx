@@ -58,10 +58,9 @@ function RegisterEventForm({ event, participants }: CardEventProps) {
     value: 1,
     min: 1,
     max: participants?.remaining_slots ?? event.capacity,
-    error: null,
   });
 
-  const { value, min, max, error } = quantityConfig;
+  const { value, min, max } = quantityConfig;
   const [message, setMessage] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
   const totalPrice = quantityConfig.value * event.price_unit;
@@ -153,22 +152,24 @@ function RegisterEventForm({ event, participants }: CardEventProps) {
 
   function decreaseQuantity() {
     if (value === min) {
-      // Si on est déjà au minimum, on déclenche l'erreur
-      setQuantityConfig({ ...quantityConfig, error: "MIN_ERROR" });
       return;
     }
     // Sinon, on baisse la quantité et on retire l'erreur éventuelle
     setQuantityConfig({
       ...quantityConfig,
       value: value - 1,
-      error: null,
     });
+    setMessage("");
   }
 
   function increaseQuantity() {
     if (value === max) {
       // Si on est déjà au maximum, on déclenche l'erreur
-      setQuantityConfig({ ...quantityConfig, error: "MAX_ERROR" });
+      setIsError(true);
+      setMessage(
+        `Désolé, il ne reste plus que ${quantityConfig.max} place(s) disponible(s).`,
+      );
+
       return;
     }
 
@@ -176,8 +177,8 @@ function RegisterEventForm({ event, participants }: CardEventProps) {
     setQuantityConfig({
       ...quantityConfig,
       value: value + 1,
-      error: null,
     });
+    setMessage("");
   }
 
   return (
@@ -265,7 +266,10 @@ function RegisterEventForm({ event, participants }: CardEventProps) {
 
           <div className="register-form-quantity">
             <div className="register-form-quantity-selector">
-              <label htmlFor="quantity" className="register-form-label">
+              <label
+                htmlFor="quantity"
+                className="register-form-quantity-label"
+              >
                 Nombre de places
               </label>
 
@@ -312,18 +316,6 @@ function RegisterEventForm({ event, participants }: CardEventProps) {
         </div>
 
         {/* affichage conditionnel des messages d'erreur liés au nb de places*/}
-
-        {error === "MIN_ERROR" && (
-          <span className="event-form-confirmation-message event-message-error">
-            Réservez au moins {min} place.
-          </span>
-        )}
-
-        {error === "MAX_ERROR" && (
-          <span className="event-form-confirmation-message event-message-error">
-            Désolé, il ne reste plus que {max} place(s) disponible(s).
-          </span>
-        )}
 
         <button
           type="submit"

@@ -32,9 +32,11 @@ function DashboardAdminPage() {
       <div className="dashboard-admin-page__header">
         <h1 className="dashboard-admin-page__heading">Tableau de bord</h1>
 
-        <button className="logOutButton" type="button" onClick={logout}>
-          Deconexion
-        </button>
+        <div className="dashboard-admin-page__header-actions">
+          <button className="logOutButton" type="button" onClick={logout}>
+            Déconnexion
+          </button>
+        </div>
       </div>
       <DashboardAdminNav />
       <div className="dashboard-admin-content">

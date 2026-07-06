@@ -42,7 +42,11 @@ function ClaimClient() {
   return (
     <section className="claim-client__container">
       <h2 className="claim-client__title">
-        <MessageSquareWarning size={20} color="var(--color-primary)" /> Faire
+        <MessageSquareWarning
+          size={20}
+          color="var(--color-primary)"
+          aria-hidden="true"
+        />{" "}
         une réclamation
       </h2>
       <p className="claim-client__subtitle">
@@ -70,6 +74,7 @@ function ClaimClient() {
             type="button"
             className={`claim-client__category ${category === cat ? "claim-client__category--active" : ""}`}
             onClick={() => setCategory(cat)}
+            aria-pressed={category === cat}
           >
             {cat}
           </button>
@@ -110,7 +115,7 @@ function ClaimClient() {
         />
       </div>
       {success && (
-        <p className="claim-client__success">
+        <p className="claim-client__success" role="alert">
           ✓ Votre réclamation a bien été envoyée !
         </p>
       )}
@@ -119,6 +124,7 @@ function ClaimClient() {
         className="claim-client__submit"
         onClick={handleSubmit}
         disabled={!title || !message || !activityId}
+        aria-disabled={!title || !message || !activityId}
       >
         Envoyer la réclamation →
       </button>

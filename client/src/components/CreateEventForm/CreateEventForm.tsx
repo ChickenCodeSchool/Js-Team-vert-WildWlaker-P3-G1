@@ -68,7 +68,11 @@ export default function CreateEventForm() {
       });
 
       if (!response.ok) {
-        setMessage({ type: "error", text: "Une erreur est survenue." });
+        const data = await response.json().catch(() => null);
+        setMessage({
+          type: "error",
+          text: data?.message ?? "Une erreur est survenue.",
+        });
         return;
       }
 

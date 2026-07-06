@@ -8,14 +8,6 @@ function InvoicePage() {
 
   if (!invoice) return <p className="invoice-page__loading">Chargement...</p>;
 
-  const priceUnit =
-    invoice.payment_status === "pending"
-      ? invoice.space_price_unit
-      : invoice.activity_price_unit;
-
-  const subtotal = invoice.quantity * priceUnit;
-  const discount = subtotal - Number(invoice.total_price);
-
   return (
     <div className="invoice-page">
       <div className="invoice-page__container">
@@ -68,9 +60,8 @@ function InvoicePage() {
             <tr>
               <th>Espace</th>
               <th>Date</th>
-              <th>Qté</th>
-              <th>Prix unitaire</th>
-              <th>Sous-total</th>
+              <th>Nb de tickets</th>
+              <th>Total</th>
             </tr>
           </thead>
           <tbody>
@@ -78,21 +69,12 @@ function InvoicePage() {
               <td>{invoice.space_name}</td>
               <td>{invoice.start_date.slice(0, 10)}</td>
               <td>{invoice.quantity}</td>
-              <td>{Number(priceUnit).toFixed(2)} €</td>
-              <td>{subtotal.toFixed(2)} €</td>
+              <td>{Number(invoice.total_price).toFixed(2)} €</td>
             </tr>
           </tbody>
         </table>
 
         <div className="invoice-page__total">
-          <p className="invoice-page__total-label">
-            Sous-total : {subtotal.toFixed(2)} €
-          </p>
-          {discount > 0 && (
-            <p className="invoice-page__total-discount">
-              Remise : -{discount.toFixed(2)} €
-            </p>
-          )}
           <strong className="invoice-page__total-amount">
             Total : {Number(invoice.total_price).toFixed(2)} €
           </strong>

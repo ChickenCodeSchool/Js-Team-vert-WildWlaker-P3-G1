@@ -20,6 +20,7 @@ function UpcomingEventClient() {
             type="button"
             className="upcoming-event-client__toggle"
             onClick={() => setShowModal(true)}
+            aria-label="Voir tous mes événements à venir"
           >
             Voir tout
           </button>
@@ -35,6 +36,7 @@ function UpcomingEventClient() {
               <CalendarClock
                 className="upcoming-event-client__icon"
                 size={18}
+                aria-hidden="true"
               />
               <div className="upcoming-event-client__info">
                 <span className="upcoming-event-client__name">

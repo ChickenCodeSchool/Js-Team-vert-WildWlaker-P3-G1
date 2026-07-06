@@ -12,6 +12,7 @@
   overflow: hidden;
   position: relative;
   width: 100%;
+  height: 100%;
   transition: var(--transition-shadow), var(--transition-transform);
 
   &:hover {
@@ -60,6 +61,7 @@
     width: 100%;
     flex-grow: 1; /* Force la zone à prendre toute la hauteur de la carte*/
     color: var(--color-text-secondary);
+    text-align: left;
     h3 {
       font-family: var(--font-heading);
       color: var(--color-text-primary);

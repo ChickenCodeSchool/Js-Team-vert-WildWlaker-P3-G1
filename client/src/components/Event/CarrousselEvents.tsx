@@ -19,12 +19,19 @@ function CarrousselEvents({ events }: CarrousselEventsProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const isClickingDot = useRef(false);
 
+  // Calcule la largeur réelle d'une carte + son gap, directement depuis le DOM
+  const getCardWidth = () => {
+    const firstCard = carouselRef.current?.querySelector(".carousel-item");
+    return firstCard ? firstCard.getBoundingClientRect().width + 24 : 0;
+    // +16 = ton gap (var(--space-4)), à ajuster selon sa valeur réelle en px
+  };
+
   // Gestion du scroll au clic sur les flèches
   const scroll = (direction: "left" | "right") => {
     if (carouselRef.current) {
-      const { scrollLeft, clientWidth } = carouselRef.current;
+      const { scrollLeft } = carouselRef.current;
 
-      const cardWidth = clientWidth * 0.58;
+      const cardWidth = getCardWidth();
 
       const scrollTo =
         direction === "left" ? scrollLeft - cardWidth : scrollLeft + cardWidth;
@@ -51,7 +58,7 @@ function CarrousselEvents({ events }: CarrousselEventsProps) {
       if (isClickingDot.current) return;
 
       // mode normal
-      const cardWidth = clientWidth * 0.58;
+      const cardWidth = getCardWidth();
       let newIndex = Math.round(scrollLeft / cardWidth);
 
       if (isAtRight) {
@@ -76,7 +83,7 @@ function CarrousselEvents({ events }: CarrousselEventsProps) {
       isClickingDot.current = true; // On bloque handleScroll
       setActiveIndex(index);
 
-      const cardWidth = carouselRef.current.clientWidth * 0.58;
+      const cardWidth = getCardWidth();
       carouselRef.current.scrollTo({
         left: index * cardWidth,
         behavior: "smooth",

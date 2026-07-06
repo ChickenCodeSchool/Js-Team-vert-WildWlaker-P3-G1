@@ -22,6 +22,7 @@ function UpcomingBookingClient() {
             type="button"
             className="upcoming-booking-client__toggle"
             onClick={() => setShowModal(true)}
+            aria-label="Voir toutes mes réservations d'espaces à venir"
           >
             Voir tout
           </button>
@@ -36,7 +37,11 @@ function UpcomingBookingClient() {
         <ul className="upcoming-booking-client__list">
           {displayed.map((booking) => (
             <li key={booking.id} className="upcoming-booking-client__item">
-              <Building2 className="upcoming-booking-client__icon" size={18} />
+              <Building2
+                className="upcoming-booking-client__icon"
+                size={18}
+                aria-hidden="true"
+              />{" "}
               <div className="upcoming-booking-client__info">
                 <span className="upcoming-booking-client__name">
                   {booking.space_name}

@@ -126,28 +126,54 @@
       align-items: stretch;
     }
 
+    .admin-events__title {
+      font-size: clamp(2rem, 6vw, 2.5rem);
+    }
+
     .admin-events__button {
       justify-content: center;
       padding: var(--space-3) var(--space-5);
     }
 
     .admin-events__table {
-      min-width: 780px;
+      min-width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    th,
+    td {
+      padding: var(--space-3) var(--space-3);
     }
   }
 
   @media screen and (max-width: 480px) {
     .admin-events__title {
-      font-size: 2rem;
+      font-size: 1.8rem;
     }
 
     .admin-events__button {
+      width: 100%;
+      justify-content: center;
       font-size: var(--text-sm);
+      padding: var(--space-3) var(--space-4);
     }
 
     th,
     td {
-      padding: var(--space-3) var(--space-3);
+      padding: var(--space-3) var(--space-2);
+    }
+
+    .admin-events__event-name,
+    .admin-events__price {
+      font-size: var(--text-sm);
+    }
+
+    .admin-events__event-category,
+    .admin-events__date-cell p:last-child,
+    .admin-events__registered p:last-child,
+    td {
+      font-size: var(--text-xs);
     }
   }
 }

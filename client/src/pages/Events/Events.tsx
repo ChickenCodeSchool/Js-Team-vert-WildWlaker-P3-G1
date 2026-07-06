@@ -66,6 +66,11 @@ function Events() {
     return "no-event";
   };
 
+  const detailsPanelStyle =
+    eventsOfTheDay.length === 0
+      ? { backgroundColor: "rgba(255,255,255,0.2)" }
+      : { backgroundColor: "transparent" };
+
   return (
     <>
       <header className="events-section-hero">
@@ -109,7 +114,7 @@ function Events() {
               />
               {/*tileClassName est une propriété de calendar pour le css*/}
             </div>
-            <div className="events-details-panel">
+            <div className="events-details-panel" style={detailsPanelStyle}>
               {eventsOfTheDay.length === 0 ? (
                 <>
                   <span className="events-icon-wrapper events-icon-empty">

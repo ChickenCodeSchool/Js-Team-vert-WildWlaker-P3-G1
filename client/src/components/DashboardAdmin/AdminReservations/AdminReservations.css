@@ -91,24 +91,38 @@
   @media screen and (max-width: 768px) {
     gap: var(--space-4);
 
-    .admin-reservations__table {
-      min-width: 760px;
+    .admin-reservations__header {
+      align-items: flex-start;
+      flex-direction: column;
     }
-  }
 
-  @media screen and (max-width: 480px) {
     .admin-reservations__title {
-      font-size: 2rem;
+      font-size: clamp(2rem, 6vw, 2.5rem);
+    }
+
+    .admin-reservations__table {
+      min-width: 100%;
     }
 
     th,
     td {
       padding: var(--space-3) var(--space-3);
     }
+  }
+
+  @media screen and (max-width: 480px) {
+    .admin-reservations__title {
+      font-size: 1.8rem;
+    }
+
+    th,
+    td {
+      padding: var(--space-2) var(--space-2);
+    }
 
     td,
     .admin-reservations__status {
-      font-size: var(--text-sm);
+      font-size: var(--text-xs);
     }
   }
 }

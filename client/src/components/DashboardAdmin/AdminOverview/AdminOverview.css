@@ -142,7 +142,7 @@
     line-height: var(--leading-normal);
   }
 
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 1024px) {
     grid-template-columns: 1fr;
     gap: var(--space-6);
 
@@ -161,8 +161,15 @@
 
   @media screen and (max-width: 640px) {
     .admin-overview__panel {
+      height: auto;
+      min-height: 320px;
       padding: var(--space-4);
       border-radius: var(--radius-md);
+    }
+
+    .admin-overview__panel-header {
+      align-items: flex-start;
+      flex-direction: column;
     }
 
     .admin-overview__title {
@@ -180,6 +187,8 @@
     }
 
     .admin-overview__header-actions {
+      width: 100%;
+      justify-content: space-between;
       gap: var(--space-2);
     }
 

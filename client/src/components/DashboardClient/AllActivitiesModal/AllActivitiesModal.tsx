@@ -39,8 +39,10 @@ function AllActivitiesModal({ title, items, onClose, type }: Props) {
       onKeyDown={(e) => e.key === "Escape" && onClose()}
       role="presentation"
     >
-      <div
+      <dialog
         className="all-activities-modal__container"
+        aria-labelledby="modal-title"
+        open
         onClick={(e) => e.stopPropagation()}
         onKeyDown={(e) => e.stopPropagation()}
       >
@@ -50,8 +52,9 @@ function AllActivitiesModal({ title, items, onClose, type }: Props) {
             type="button"
             className="all-activities-modal__close"
             onClick={onClose}
+            aria-label="Fermer la modale"
           >
-            <X size={20} />
+            <X size={20} aria-hidden="true" />
           </button>
         </div>
 
@@ -86,7 +89,7 @@ function AllActivitiesModal({ title, items, onClose, type }: Props) {
             </li>
           ))}
         </ul>
-      </div>
+      </dialog>
     </div>
   );
 }

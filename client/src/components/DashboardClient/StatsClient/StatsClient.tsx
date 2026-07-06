@@ -9,10 +9,15 @@ function StatsClient() {
   if (!stats) return null;
 
   return (
-    <section className="stats-client__container">
+    <section className="stats-client__container" aria-label="Mes statistiques">
+      {" "}
       <div className="stats-client__card">
-        <span className="stats-client__value">{stats.bookings_count}</span>
-        <span className="stats-client__label">Réservations au total</span>
+        <span className="stats-client__value" aria-hidden="true">
+          {stats.bookings_count}
+        </span>
+        <span className="stats-client__label" aria-hidden="true">
+          Réservations au total
+        </span>
       </div>
       <div className="stats-client__card">
         <span className="stats-client__value">

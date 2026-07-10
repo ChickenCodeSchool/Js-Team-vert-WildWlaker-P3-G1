@@ -114,6 +114,12 @@
         border: 1px solid #a5d6a7;
       }
 
+      &.create-event-message--info {
+        background-color: #eef3f7;
+        color: var(--color-text-secondary);
+        border: 1px solid #d7e2ea;
+      }
+
       &.create-event-message--error {
         background-color: #fdecea;
         color: #c62828;
@@ -310,12 +316,17 @@
       cursor: pointer;
       transition: background-color 0.2s ease, transform 0.1s ease;
 
-      &:hover {
+      &:hover:not(:disabled) {
         background-color: var(--color-primary-dark);
       }
 
-      &:active {
+      &:active:not(:disabled) {
         transform: scale(0.99);
+      }
+
+      &:disabled {
+        opacity: 0.65;
+        cursor: wait;
       }
 
       & .create-event-submit-icon {

@@ -6,6 +6,16 @@ import { apiFetch } from "../../hooks/apiFetch";
 
 type Tab = "client" | "admin";
 
+function getSafeRedirectPath() {
+  const redirect = new URLSearchParams(window.location.search).get("redirect");
+
+  if (redirect?.startsWith("/") && !redirect.startsWith("//")) {
+    return redirect;
+  }
+
+  return null;
+}
+
 export default function Login() {
   const [tab, setTab] = useState<Tab>("client");
   const [email, setEmail] = useState("");
@@ -14,6 +24,10 @@ export default function Login() {
   const [remember, setRemember] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const redirectPath = getSafeRedirectPath();
+  const signInPath = redirectPath
+    ? `/sign-in?redirect=${encodeURIComponent(redirectPath)}`
+    : "/sign-in";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,8 +56,11 @@ export default function Login() {
         sessionStorage.setItem("token", data.token);
       }
 
+      window.dispatchEvent(new Event("storage"));
       window.location.href =
-        tab === "admin" ? "/dashboard-admin" : "/dashboard-client";
+        tab === "admin"
+          ? "/dashboard-admin"
+          : (redirectPath ?? "/dashboard-client");
     } catch {
       setError("Impossible de contacter le serveur.");
     } finally {
@@ -143,7 +160,8 @@ export default function Login() {
             </button>
 
             <p className="auth-switch">
-              Pas encore de compte ? <Link to="/sign-in">Créer un compte</Link>
+              Pas encore de compte ?{" "}
+              <Link to={signInPath}>Créer un compte</Link>
             </p>
           </div>
         </form>

@@ -3,6 +3,16 @@ import "../Login/Login.css";
 import { Link } from "react-router";
 import { apiFetch } from "../../hooks/apiFetch";
 
+function getSafeRedirectPath() {
+  const redirect = new URLSearchParams(window.location.search).get("redirect");
+
+  if (redirect?.startsWith("/") && !redirect.startsWith("//")) {
+    return redirect;
+  }
+
+  return null;
+}
+
 export default function SignIn() {
   const [form, setForm] = useState({
     firstname: "",
@@ -15,6 +25,10 @@ export default function SignIn() {
   });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const redirectPath = getSafeRedirectPath();
+  const loginPath = redirectPath
+    ? `/log-in?redirect=${encodeURIComponent(redirectPath)}`
+    : "/log-in";
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -39,7 +53,8 @@ export default function SignIn() {
       }
 
       localStorage.setItem("token", data.token);
-      window.location.href = "/dashboard-client";
+      window.dispatchEvent(new Event("storage"));
+      window.location.href = redirectPath ?? "/dashboard-client";
     } catch {
       setError("Impossible de contacter le serveur.");
     } finally {
@@ -142,7 +157,7 @@ export default function SignIn() {
             </button>
 
             <p className="auth-switch">
-              Déjà un compte ? <Link to="/log-in">Se connecter</Link>
+              Déjà un compte ? <Link to={loginPath}>Se connecter</Link>
             </p>
           </div>
         </div>

@@ -1,14 +1,72 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./CreateEventForm.css";
 import { useAuthContext } from "../../context/AuthContext";
 import { apiFetch } from "../../hooks/apiFetch";
 import useSpaces from "../../hooks/useSpaces";
 import useTimeSlot from "../../hooks/useTimeSlot";
 
+type CreateEventDraft = {
+  participants: number;
+  priceUnit: number;
+  startDate: string;
+  nom: string;
+  email: string;
+  titre: string;
+  description: string;
+  selectedSpace: string;
+  selectedTimeSlot: string;
+  imageFileName: string;
+};
+
+type StoredCreateEventDraft = CreateEventDraft & {
+  pendingSubmit: boolean;
+};
+
+const CREATE_EVENT_DRAFT_STORAGE_KEY = "create-event-form-draft";
+
+function readStoredDraft(): StoredCreateEventDraft | null {
+  const rawDraft = sessionStorage.getItem(CREATE_EVENT_DRAFT_STORAGE_KEY);
+
+  if (!rawDraft) {
+    return null;
+  }
+
+  try {
+    const draft = JSON.parse(rawDraft) as Partial<StoredCreateEventDraft>;
+
+    return {
+      participants: Number(draft.participants) || 0,
+      priceUnit: Number(draft.priceUnit) || 0,
+      startDate: draft.startDate ?? "",
+      nom: draft.nom ?? "",
+      email: draft.email ?? "",
+      titre: draft.titre ?? "",
+      description: draft.description ?? "",
+      selectedSpace: draft.selectedSpace ?? "",
+      selectedTimeSlot: draft.selectedTimeSlot ?? "",
+      imageFileName: draft.imageFileName ?? "",
+      pendingSubmit: Boolean(draft.pendingSubmit),
+    };
+  } catch {
+    sessionStorage.removeItem(CREATE_EVENT_DRAFT_STORAGE_KEY);
+    return null;
+  }
+}
+
+function writeStoredDraft(draft: StoredCreateEventDraft) {
+  sessionStorage.setItem(CREATE_EVENT_DRAFT_STORAGE_KEY, JSON.stringify(draft));
+}
+
+function getLoginRedirectUrl() {
+  const returnPath = `${window.location.pathname}${window.location.search}#create-event-form`;
+  return `/log-in?redirect=${encodeURIComponent(returnPath)}`;
+}
+
 export default function CreateEventForm() {
   const user = useAuthContext();
   const spaces = useSpaces();
   const slot = useTimeSlot();
+  const hasAutoSubmittedDraft = useRef(false);
   const [participants, setParticipants] = useState<number>(0);
   const [priceUnit, setPriceUnit] = useState<number>(0);
   const [startDate, setStartDate] = useState<string>("");
@@ -19,27 +77,148 @@ export default function CreateEventForm() {
   const [selectedSpace, setSelectedSpace] = useState<string>("");
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>("");
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFileName, setImageFileName] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<{
     type: "success" | "error";
     text: string;
   } | null>(null);
 
-  const isDisabled = !user || user.role === "admin";
-
   const filteredSpaces = spaces.filter(
     (space) => space.space_type === "Evenements",
   );
+
+  const getCurrentDraft = (): CreateEventDraft => ({
+    participants,
+    priceUnit,
+    startDate,
+    nom,
+    email,
+    titre,
+    description,
+    selectedSpace,
+    selectedTimeSlot,
+    imageFileName: imageFile?.name || imageFileName,
+  });
+
+  const restoreDraft = useCallback((draft: CreateEventDraft) => {
+    setParticipants(draft.participants);
+    setPriceUnit(draft.priceUnit);
+    setStartDate(draft.startDate);
+    setNom(draft.nom);
+    setEmail(draft.email);
+    setTitre(draft.titre);
+    setDescription(draft.description);
+    setSelectedSpace(draft.selectedSpace);
+    setSelectedTimeSlot(draft.selectedTimeSlot);
+    setImageFile(null);
+    setImageFileName(draft.imageFileName);
+  }, []);
+
+  const saveDraft = (draft: CreateEventDraft, pendingSubmit: boolean) => {
+    writeStoredDraft({ ...draft, pendingSubmit });
+  };
+
+  const resetForm = useCallback(() => {
+    setDescription("");
+    setEmail("");
+    setImageFile(null);
+    setImageFileName("");
+    setMessage(null);
+    setNom("");
+    setParticipants(0);
+    setPriceUnit(0);
+    setSelectedSpace("");
+    setSelectedTimeSlot("");
+    setStartDate("");
+    setTitre("");
+    sessionStorage.removeItem(CREATE_EVENT_DRAFT_STORAGE_KEY);
+  }, []);
+
+  const submitEventRequest = useCallback(
+    async (draft: CreateEventDraft): Promise<void> => {
+      setIsSubmitting(true);
+
+      try {
+        const response = await apiFetch(
+          "/api/dashboard/client/event-requests",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: draft.titre,
+              description: draft.description,
+              start_date: draft.startDate,
+              end_date: draft.startDate,
+              space_id: Number(draft.selectedSpace),
+              time_slot_id: Number(draft.selectedTimeSlot),
+              url_image: null,
+              price_unit: draft.priceUnit,
+            }),
+          },
+        );
+
+        if (!response.ok) {
+          const data = await response.json().catch(() => null);
+          setMessage({
+            type: "error",
+            text: data?.message ?? "Une erreur est survenue.",
+          });
+          return;
+        }
+
+        setMessage({
+          type: "success",
+          text: "Votre demande a bien été envoyée. Nous vous répondrons sous 48h.",
+        });
+
+        window.setTimeout(resetForm, 3000);
+      } catch {
+        setMessage({
+          type: "error",
+          text: "Une erreur est survenue. Veuillez réessayer.",
+        });
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [resetForm],
+  );
+
+  useEffect(() => {
+    const storedDraft = readStoredDraft();
+
+    if (!storedDraft) {
+      return;
+    }
+
+    restoreDraft(storedDraft);
+
+    if (
+      !user ||
+      user.role === "admin" ||
+      !storedDraft.pendingSubmit ||
+      hasAutoSubmittedDraft.current
+    ) {
+      return;
+    }
+
+    hasAutoSubmittedDraft.current = true;
+    writeStoredDraft({ ...storedDraft, pendingSubmit: false });
+    void submitEventRequest(storedDraft);
+  }, [restoreDraft, submitEventRequest, user]);
 
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
+    setMessage(null);
+
+    const draft = getCurrentDraft();
 
     if (!user) {
-      setMessage({
-        type: "error",
-        text: "Veuillez vous connecter pour soumettre une demande.",
-      });
+      saveDraft(draft, true);
+      window.location.href = getLoginRedirectUrl();
       return;
     }
 
@@ -51,55 +230,10 @@ export default function CreateEventForm() {
       return;
     }
 
-    try {
-      const response = await apiFetch("/api/dashboard/client/event-requests", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: titre,
-          description,
-          start_date: startDate,
-          end_date: startDate,
-          space_id: Number(selectedSpace),
-          time_slot_id: Number(selectedTimeSlot),
-          url_image: null,
-          price_unit: priceUnit,
-        }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json().catch(() => null);
-        setMessage({
-          type: "error",
-          text: data?.message ?? "Une erreur est survenue.",
-        });
-        return;
-      }
-
-      setMessage({
-        type: "success",
-        text: "Votre demande a bien été envoyée. Nous vous répondrons sous 48h.",
-      });
-    } catch (error) {
-      setMessage({
-        type: "error",
-        text: "Une erreur est survenue. Veuillez réessayer.",
-      });
-    }
-
-    setTimeout(() => {
-      setDescription("");
-      setEmail("");
-      setImageFile(null);
-      setMessage(null);
-      setNom("");
-      setParticipants(0);
-      setSelectedSpace("");
-      setSelectedTimeSlot("");
-      setStartDate("");
-      setTitre("");
-    }, 3000);
+    await submitEventRequest(draft);
   };
+
+  const displayedImageName = imageFile?.name || imageFileName;
 
   return (
     <div className="create-event-page">
@@ -129,23 +263,28 @@ export default function CreateEventForm() {
       </div>
 
       <form
+        id="create-event-form"
         className="create-event-form-container"
         onSubmit={handleSubmit}
-        noValidate
       >
+        {!user && (
+          <p className="create-event-message create-event-message--info">
+            Vous pourrez vous connecter à l'étape finale pour envoyer votre
+            demande.
+          </p>
+        )}
+
+        {user?.role === "admin" && (
+          <p className="create-event-message create-event-message--info">
+            Les administrateurs créent des événements depuis le tableau de bord.
+          </p>
+        )}
+
         {message && (
           <p
             className={`create-event-message create-event-message--${message.type}`}
           >
             {message.text}
-          </p>
-        )}
-
-        {isDisabled && (
-          <p className="create-event-message create-event-message--error">
-            {user?.role === "admin"
-              ? "Les administrateurs créent des événements depuis le tableau de bord."
-              : "Veuillez vous connecter pour soumettre une demande."}
           </p>
         )}
 
@@ -162,7 +301,6 @@ export default function CreateEventForm() {
               onChange={(e) => setNom(e.target.value)}
               placeholder="Sophie Lefèvre"
               required
-              disabled={isDisabled}
             />
           </div>
 
@@ -178,7 +316,6 @@ export default function CreateEventForm() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="sophie@studio.fr"
               required
-              disabled={isDisabled}
             />
           </div>
         </div>
@@ -195,7 +332,6 @@ export default function CreateEventForm() {
             onChange={(e) => setTitre(e.target.value)}
             placeholder="Workshop Sérigraphie"
             required
-            disabled={isDisabled}
           />
         </div>
 
@@ -213,7 +349,6 @@ export default function CreateEventForm() {
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 required
-                disabled={isDisabled}
                 min={new Date().toISOString().slice(0, 10)}
               />
             </div>
@@ -237,7 +372,6 @@ export default function CreateEventForm() {
                 max={300}
                 value={participants || ""}
                 onChange={(e) => setParticipants(Number(e.target.value))}
-                disabled={isDisabled}
               />
             </div>
           </div>
@@ -255,7 +389,6 @@ export default function CreateEventForm() {
             value={priceUnit || ""}
             onChange={(e) => setPriceUnit(Number(e.target.value))}
             placeholder="0 = gratuit"
-            disabled={isDisabled}
           />
         </div>
 
@@ -270,7 +403,6 @@ export default function CreateEventForm() {
               value={selectedSpace}
               onChange={(e) => setSelectedSpace(e.target.value)}
               required
-              disabled={isDisabled}
             >
               <option value="">Choisir une salle</option>
               {filteredSpaces.map((space) => (
@@ -291,7 +423,6 @@ export default function CreateEventForm() {
               value={selectedTimeSlot}
               onChange={(e) => setSelectedTimeSlot(e.target.value)}
               required
-              disabled={isDisabled}
             >
               <option value="">Choisir un créneau</option>
               {slot.map((timeSlot) => (
@@ -310,8 +441,10 @@ export default function CreateEventForm() {
           <label htmlFor="image" className="create-event-image-upload-label">
             <span className="create-event-image-upload-icon">🖼️</span>
             <span className="create-event-image-upload-text">
-              {imageFile
-                ? imageFile.name
+              {displayedImageName
+                ? imageFile
+                  ? displayedImageName
+                  : `${displayedImageName} (à resélectionner si besoin)`
                 : "Choisir une image (JPG, PNG, WEBP · 5 Mo max)"}
             </span>
             <input
@@ -319,10 +452,11 @@ export default function CreateEventForm() {
               className="create-event-image-input"
               type="file"
               accept="image/jpeg, image/png, image/webp"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setImageFile(e.target.files?.[0] ?? null)
-              }
-              disabled={isDisabled}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                const file = e.target.files?.[0] ?? null;
+                setImageFile(file);
+                setImageFileName(file?.name ?? "");
+              }}
             />
           </label>
         </div>
@@ -343,17 +477,16 @@ export default function CreateEventForm() {
             placeholder="Décrivez votre événement, son objectif, son public cible…"
             rows={4}
             required
-            disabled={isDisabled}
           />
         </div>
 
         <button
           type="submit"
           className="create-event-submit-button"
-          disabled={isDisabled}
+          disabled={isSubmitting}
         >
           <span className="create-event-submit-icon">→</span>
-          Envoyer ma demande
+          {isSubmitting ? "Envoi en cours..." : "Envoyer ma demande"}
         </button>
 
         <p className="create-event-form-footnote">
